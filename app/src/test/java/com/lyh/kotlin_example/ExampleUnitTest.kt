@@ -2,9 +2,6 @@ package com.lyh.kotlin_example
 
 import org.junit.Test
 
-import org.junit.Assert.*
-import java.lang.Exception
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -35,5 +32,24 @@ class ExampleUnitTest {
         for (ch in abc) {
             println("abc char at $ch")
         }
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun test2() {
+        val name: String? = "name"
+        var nullName: String? = null
+        println(nullName)
+        nullName = "null"
+        println(name?.length)
+        println(nullName!!.length)
+
+        //java - Void
+        val nul: Nothing? = null
+
+        //java - Object
+        var any: Any?
+        any = 10
+        print("any : $any")
     }
 }
