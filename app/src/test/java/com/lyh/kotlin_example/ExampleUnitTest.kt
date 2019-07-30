@@ -8,6 +8,17 @@ import org.junit.Test
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
+    private val lazyInit:String by lazy {
+        print("lazy init")
+        "lazyinit"
+    }
+
+    // var = mutable 변수만 사용할 수 있다.
+    // null 초기값 할 필요 없다.
+    // 반드시 초기화 후 사용되어야 한다. (그 전에 사용시 에러 발생)
+    private lateinit var lazyInit2:String
+
     @Test
     @Throws(Exception::class)
     fun test() {
@@ -69,5 +80,16 @@ class ExampleUnitTest {
             get() = this.list.isEmpty()
 
     }
-    
+
+    @Test
+    @Throws(Exception::class)
+    fun lazyInit() {
+        lazyInit
+
+        //에러 발생
+//        print(lazyInit2)
+        lazyInit2 = "laztInit2"
+        print(lazyInit2)
+    }
+
 }
