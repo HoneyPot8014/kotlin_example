@@ -52,4 +52,22 @@ class ExampleUnitTest {
         any = 10
         print("any : $any")
     }
+
+    class Sample<T> {
+        // var <property name>[: property type][ = property initializer]
+        //   [getter]
+        //   [setter]
+
+        var list: List<T> = mutableListOf()
+            private  set(value) {
+                if(value.isNotEmpty()) {
+                    field = value
+                }
+            }
+
+        val isEmpty:Boolean
+            get() = this.list.isEmpty()
+
+    }
+    
 }
