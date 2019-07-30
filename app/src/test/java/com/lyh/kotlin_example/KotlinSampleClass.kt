@@ -26,6 +26,20 @@ class Sample3(name: String) {
 
 class Sample4 private constructor(val name: String)
 
+
+abstract class Base(age: Int)
+
+class UseBase constructor(age: Int) : Base(age)
+
+interface BaseInterface {
+    fun getName(): String
+}
+
+class BaseImpl(private val name: String) : BaseInterface {
+    override fun getName(): String = name
+}
+
+
 class TestClass {
 
     @Test
