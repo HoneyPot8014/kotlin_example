@@ -126,4 +126,11 @@ class MethodSample {
         loopInMap(mutableMapOf(1 to "a", 2 to "b", 3 to "c", 4 to "d"))
     }
 
+    @Test
+    @Throws(Exception::class)
+    fun streamFunction() {
+        val list = mutableListOf(1, 2, 3, 4, 5, 6)
+        println("index * 2 of list element > 3 :  ${list.filter { it > 3 }.map { "index : $it, value : ${it * 2}" }}")
+    }
+
 }
