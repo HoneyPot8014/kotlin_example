@@ -29,7 +29,10 @@ class Sample4 private constructor(val name: String)
 
 abstract class Base(age: Int)
 
+// 기본 클래스는 final. 상속 불가능한 클래스가 된다.
 class UseBase constructor(age: Int) : Base(age)
+
+open class OpenClass constructor(age: Int)
 
 interface BaseInterface {
     fun getName(): String
