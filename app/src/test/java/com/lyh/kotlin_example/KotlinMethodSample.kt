@@ -4,7 +4,7 @@ import org.junit.Test
 
 class MethodSample {
 
-    fun noReturnFun(): Unit {
+    fun noReturnFun() {
         // no return method
         // Unit 생략 가능
     }
@@ -126,6 +126,58 @@ class MethodSample {
         loopInMap(mutableMapOf(1 to "a", 2 to "b", 3 to "c", 4 to "d"))
     }
 
+    private fun streamLabel1(list: List<Int>) {
+        list.forEach {
+            if(it == 3)  return
+            print("$it ")
+        }
+        println("unreachable - function return!!")
+    }
+
+    private fun streamLabel2(list: List<Int>) {
+        list.forEach{
+            if(it == 3) return@forEach
+            print("$it ")
+        }
+        println("reachable - only stream function return!!")
+    }
+
+    class ThisSample {
+        private fun Int.thisTest() {
+            val a = this@ThisSample
+            val b = this
+            val c = this@thisTest
+
+//            println("a(this@ThisSample) === b(this) : ${a === b}")
+            println("b(this) === c(this@thisTest) : ${b === c}")
+        }
+
+        fun foo() {
+            10.thisTest()
+        }
+    }
+
+    class ThisSample2 {
+
+        inner class ThisSample3 {
+            fun Int.foo() {
+                val a = this
+                val b = this@ThisSample2
+                val c = this@ThisSample3
+            }
+
+            fun test() {
+                10.foo()
+                println("inner class test()")
+                this@ThisSample2.test()
+            }
+        }
+
+        fun test() {
+            println("outer class test()")
+        }
+    }
+
     @Test
     @Throws(Exception::class)
     fun streamFunction() {
@@ -133,4 +185,44 @@ class MethodSample {
         println("index * 2 of list element > 3 :  ${list.filter { it > 3 }.map { "index : $it, value : ${it * 2}" }}")
     }
 
+    @Test
+    @Throws(Exception::class)
+    fun jumpExample() {
+        println("\nlabel 1 test")
+        outerLoop@ for (i in 0..100) {
+            for (j in 0..10) {
+                if (j > 5) break@outerLoop
+                println("i : $i, j : $j")
+            }
+        }
+        println("label 1 End")
+
+        println("\nlabel 2 test")
+        for (i in 0..1) {
+            innerLoop@ for(j in 0..10) {
+                if(j > 5) break@innerLoop
+                println("i: $i, j : $j")
+            }
+        }
+        println("label 2 End")
+
+        println("\nlabel 3 test")
+        val list = mutableListOf(1,2,3,4,5)
+        streamLabel1(list)
+        println("label 3 End")
+
+        println("\nlabel 4 test")
+        streamLabel2(list)
+        println("label 4 End")
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun thisSample() {
+        val clazz = ThisSample()
+        clazz.foo()
+
+        val thisClazz = ThisSample2().ThisSample3()
+        thisClazz.test()
+    }
 }
