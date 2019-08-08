@@ -59,4 +59,32 @@ class NullTest {
 
         val size2 = temp?.length ?: throw NullPointerException("temp is null")
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun classCastingExample() {
+        val a: Any? = "Any"
+
+        // class casting Exception
+        // val b: Int? = a as Int
+
+        // java 디컴파일로 보면, instance of로 확인해줌.
+        val b: Int? = a as? Int
+
+        when (a) {
+            is Int -> println(a)
+            is String -> println(a)
+            else -> println("nothing")
+        }
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun streamNullTest() {
+        val list = mutableListOf(null, "a", "b", "c", "d", null)
+        val notNullList = list.filterNotNull()
+        notNullList.forEach {
+            print("$it ")
+        }
+    }
 }
