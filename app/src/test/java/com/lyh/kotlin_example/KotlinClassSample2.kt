@@ -1,5 +1,6 @@
 package com.lyh.kotlin_example
 
+import android.view.View
 import org.junit.Test
 
 open class A {
@@ -132,6 +133,37 @@ class SingleTon3 {
     }
 }
 
+class NestedClass {
+    private val temp: Int = 0
+
+    // decompile해 보면, static class로 선언됨.
+    class Nested {
+        fun foo() = 0
+    }
+}
+
+class InnerClass {
+    private val temp: Int = 0
+
+    inner class Inner {
+        fun foo() = 0
+    }
+}
+
+interface OnClickListener {
+
+    fun onClick()
+}
+
+
+fun setOnClick(onClickListener: OnClickListener?) {
+    onClickListener?.onClick()
+}
+
+fun setOnTouch(onTouchListener: View.OnTouchListener?) {
+//    onTouchListener?.onTouch()
+}
+
 class Test {
 
     @Test
@@ -161,6 +193,30 @@ class Test {
             is Sum -> eval(expr.e1) + eval(expr.e2)
             NotANumber -> Double.NaN
         }
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun nestedClassTest() {
+        // 외부 클래스가 static처럼 사용 됨
+        NestedClass.Nested().foo()
+
+        // 외부 클래스를 인스턴스 한 후에 사용
+        InnerClass().Inner().foo()
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun anonymousObject() {
+        setOnClick(object : OnClickListener {
+            override fun onClick() {
+                println("anonymous Object")
+            }
+        })
+
+        setOnTouch(View.OnTouchListener { _, _ ->
+            return@OnTouchListener true
+        })
     }
 
 }
