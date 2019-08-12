@@ -70,6 +70,29 @@ class InitBlockClass2(name: String, private val age: Int) {
     }
 }
 
+class CompanionClassSample {
+    val name: String? = null
+
+    companion object {
+        // java에서 private static의 멤버로 type을 만든다.
+        // kotlin에서 접근시 static처럼 접근하지만, java에서 Class.Companion.변수로 Companion 내부 클래스로 접근하게 된다.
+        val TYPE: Int = 0
+
+        fun isTypeZero() = TYPE == 0
+    }
+
+}
+
+class CompanionClassSample2 {
+
+    companion object {
+        // const, @JvmStatic, @JvmField 키워드를 통해 java에서 바로 접근 가능할 수 있다.
+        const val TYPE: Int = 0
+        @JvmField val NAME: String = "name"
+        @JvmStatic fun isTypeZero() = TYPE == 0
+    }
+}
+
 class Test {
 
     @Test
@@ -81,6 +104,14 @@ class Test {
         println()
 
         val initBlockClass2 = InitBlockClass2("name", 22, "2010-01-02")
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun companionTest() {
+        // java 의 static처럼 접근
+        CompanionClassSample.isTypeZero()
+
     }
 
 }
