@@ -88,15 +88,49 @@ class CompanionClassSample2 {
     companion object {
         // const, @JvmStatic, @JvmField 키워드를 통해 java에서 바로 접근 가능할 수 있다.
         const val TYPE: Int = 0
-        @JvmField val NAME: String = "name"
-        @JvmStatic fun isTypeZero() = TYPE == 0
+        @JvmField
+        val NAME: String = "name"
+
+        @JvmStatic
+        fun isTypeZero() = TYPE == 0
     }
 }
 
 sealed class Expr(val name: String)
-class Const(val number: Double): Expr("")
-data class Sum(val e1: Expr, val e2: Expr): Expr("")
-object NotANumber: Expr("")
+class Const(val number: Double) : Expr("")
+data class Sum(val e1: Expr, val e2: Expr) : Expr("")
+object NotANumber : Expr("")
+
+
+// 생설자를 가질 수 없는 싱글턴 클래스
+object SingleTon1
+
+class SingleTon2 private constructor(val name: String) {
+
+    companion object {
+        @Volatile
+        private var INSTANCE: SingleTon2? = null
+
+        @JvmStatic
+        fun getInstance(name: String) {
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: SingleTon2(name).also { INSTANCE = it }
+            }
+        }
+    }
+}
+
+class SingleTon3 {
+
+    companion object {
+        private val INSTANCE: SingleTon3 by lazy {
+            SingleTon3()
+        }
+
+        @JvmStatic
+        fun getInstance(): SingleTon3 = INSTANCE
+    }
+}
 
 class Test {
 
@@ -122,7 +156,7 @@ class Test {
     @Test
     @Throws(Exception::class)
     fun eval(expr: Expr): Double {
-        return when(expr) {
+        return when (expr) {
             is Const -> expr.number
             is Sum -> eval(expr.e1) + eval(expr.e2)
             NotANumber -> Double.NaN
