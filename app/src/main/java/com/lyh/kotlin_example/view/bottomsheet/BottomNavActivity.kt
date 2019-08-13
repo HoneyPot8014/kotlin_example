@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lyh.kotlin_example.R
 import com.lyh.kotlin_example.util.replace
+import com.lyh.kotlin_example.view.home.HomeFragment
 
 class BottomNavActivity : AppCompatActivity() {
 
     private val homeFragment by lazy {
-       HomeFragment.newInstance(getString(R.string.title_home))
+       HomeFragment.newInstance()
     }
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
