@@ -1,29 +1,31 @@
 package com.lyh.kotlin_example.view.home
 
 import android.os.AsyncTask
+import com.lyh.kotlin_example.data.repository.ImageRepository
 
-class HomePresenter(val view: HomeContract.View) : HomeContract.Presenter {
+class HomePresenter(private val view: HomeContract.View,
+                    private val imageRepository: ImageRepository) : HomeContract.Presenter {
 
     override fun loadImage() {
-        ImageAsyncTask(view).execute()
+        ImageAsyncTask(view, imageRepository).execute()
     }
 
-    class ImageAsyncTask(val view: HomeContract.View) : AsyncTask<Unit, Unit, String>() {
+    class ImageAsyncTask(private val view: HomeContract.View,
+                         private val imageRepository: ImageRepository) : AsyncTask<Unit, Unit, Unit>() {
 
         override fun onPreExecute() {
             super.onPreExecute()
             view.showProgress()
         }
 
-        override fun doInBackground(vararg params: Unit?): String {
+        override fun doInBackground(vararg params: Unit?) {
             Thread.sleep(1000)
-            return String.format("sample_%02d", (1..20).random())
         }
 
-        override fun onPostExecute(result: String?) {
+        override fun onPostExecute(result: Unit?) {
             super.onPostExecute(result)
             view.hideProgress()
-            result?.let {
+            imageRepository.loadImageFileName {
                 view.showImage(it)
             }
         }

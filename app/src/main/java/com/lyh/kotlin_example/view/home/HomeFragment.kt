@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.lyh.kotlin_example.R
+import com.lyh.kotlin_example.data.repository.ImageRepository
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(), HomeContract.View {
@@ -20,7 +21,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     private val presenter: HomePresenter by lazy {
-        HomePresenter(this)
+        HomePresenter(this, ImageRepository)
     }
 
     override fun showImage(imageName: String?) {
