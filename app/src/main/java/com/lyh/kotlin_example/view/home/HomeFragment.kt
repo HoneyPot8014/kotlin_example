@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.lyh.kotlin_example.R
+import com.lyh.kotlin_example.data.model.ImageModel
 import com.lyh.kotlin_example.data.repository.ImageRepository
+import com.lyh.kotlin_example.view.home.adapter.ItemViewAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(), HomeContract.View {
@@ -24,8 +27,12 @@ class HomeFragment : Fragment(), HomeContract.View {
         HomePresenter(this, ImageRepository)
     }
 
-    override fun showImage(imageName: String?) {
-        iv_home?.setImageResource(resources.getIdentifier(imageName, "drawable", context?.packageName))
+    private val itemViewAdapter: ItemViewAdapter by lazy {
+        ItemViewAdapter()
+    }
+
+    override fun showImage(itemList: List<ImageModel>) {
+        itemViewAdapter.setItem(itemList)
     }
 
     override fun hideProgress() {
@@ -46,6 +53,10 @@ class HomeFragment : Fragment(), HomeContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        rv_home.run {
+            adapter = itemViewAdapter
+            layoutManager = GridLayoutManager(this@HomeFragment.context, 2)
+        }
         presenter.loadImage()
     }
 
